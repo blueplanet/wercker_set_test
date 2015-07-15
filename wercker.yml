@@ -1,12 +1,9 @@
 box: wercker/rvm
-services:
-    - wercker/mysql
 build:
     steps:
       - rvm-use:
             version: 2.2.2
       - bundle-install
-      - rails-database-yml
       - script:
           name: echo ruby information
           code: |
