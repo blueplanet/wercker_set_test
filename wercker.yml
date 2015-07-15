@@ -1,7 +1,21 @@
-box: rails:4.2.2
+box: wercker/rvm
+services:
+    - wercker/mysql
 build:
-  steps:
-    - bundle-install
-    - script:
-        name: rspec
-        code: bundle exec rspec
+    steps:
+      - rvm-use:
+            version: 2.2.2
+      - bundle-install
+      - rails-database-yml
+      - script:
+          name: echo ruby information
+          code: |
+              echo "ruby version $(ruby --version) running!"
+              echo "from location $(which ruby)"
+              echo -p "gem list: $(gem list)"
+      - script:
+          name: Set up db
+          code: bin/rake db:migrate RAILS_ENV=test
+      - script:
+          name: Run RSpec
+          code: bundle exec rake
